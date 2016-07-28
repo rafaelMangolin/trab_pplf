@@ -1,0 +1,8 @@
+solucao(C,V):- member(C,[ana,bruno,carlos,daniel]),apenas_um(C,V),!.
+apenas_um(C,V):- 
+    X is 0, 
+member(R,[ana,bruno,carlos,daniel]), criminoso(R,C), X is X+1, V is R.
+criminoso(ana,A):- A \= ana.
+criminoso(bruno,carlos).
+criminoso(carlos,daniel).
+criminoso(daniel,D):- D \= daniel.
