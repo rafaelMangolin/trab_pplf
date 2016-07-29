@@ -1,8 +1,7 @@
 solucao(C,V):-
 	member(C,[ana,bruno,carlos,daniel]),
-	X = 0,
 	apenas_um(C,[ana,carlos,daniel,bruno],V,X),
-	X is 1,
+	X == 1,
 	!.
 
 apenas_um(_,[],_,Y):- Y is 0.

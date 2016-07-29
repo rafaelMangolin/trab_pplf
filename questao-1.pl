@@ -4,7 +4,7 @@ solucao(C,V):-
 	X == 1,
 	!.
 
-apenas_um(_,[],_,Y):- Y is 0.
+apenas_um(_,[],_,Y):- Y is 0, !.
 apenas_um(C,[X|X0],V,Y):-
 	apenas_um(C,X0,V,Y1),
         criminoso(X,C),

@@ -1,11 +1,28 @@
 melhor_caminho(bucharest,[bucharest]):-!.
-melhor_caminho(O,[O|C]) :- 
+melhor_caminho(O,[O|C]) :-
 	melhor_vizinho(O,V),
 	melhor_caminho(V,C).
-				
 
-melhor_vizinho(O,V):-!.
 
+melhor_vizinho(O,V):-
+    O-O1,
+	menor_heuristica(O1,H),
+	h(V,H).
+
+menor_heuristica([],1000000):-!.
+menor_heuristica([A|A1],H):-
+	menor_heuristica(A1,H1),
+	C/_ = A,
+	h(C,H0),
+	H0 =< H1,
+	H = H0,!.
+
+menor_heuristica([A|A1],H):-
+	menor_heuristica(A1,H1),
+	C/_ = A,
+	h(C,H0),
+	H0 > H1,
+	H = H1,!.
 
 arad-[sibiu/140, timisoara/118, zerind/75].
 bucharest-[fagaras/211, giurgiu/90, pitesti/101, urziceni/85].
@@ -29,23 +46,23 @@ vaslui-[iasi/92, urziceni/142].
 zerind-[arad/75, oradea/71].
 
 
-reta(arad,366).
-reta(bucharest,0).
-reta(craiova,160).
-reta(dobreta,242).
-reta(eforie,161).
-reta(fagara,178).
-reta(giurgiu,77).
-reta(hirsova,151).
-reta(iasi,226).
-reta(lugoj,244).
-reta(mehadia,241).
-reta(neamt,234).
-reta(oradea,380).
-reta(pitesti,98).
-reta(rimnicu_vilcea,193).
-reta(sibiu,253).
-reta(timisoara,329).
-reta(urziceni,80).
-reta(vaslui,199).
-reta(zerind,374).
+h(arad,366).
+h(bucharest,0).
+h(craiova,160).
+h(dobreta,242).
+h(eforie,161).
+h(fagaras,178).
+h(giurgiu,77).
+h(hirsova,151).
+h(iasi,226).
+h(lugoj,244).
+h(mehadia,241).
+h(neamt,234).
+h(oradea,380).
+h(pitesti,98).
+h(rimnicu_vilcea,193).
+h(sibiu,253).
+h(timisoara,329).
+h(urziceni,80).
+h(vaslui,199).
+h(zerind,374).
