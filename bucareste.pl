@@ -1,18 +1,53 @@
-% Exercicio 3
+%% Exercicio 3
 
+
+:- use_module(library(plunit)).
+
+%% melhor_caminho(?O, ?M) is semidet.
+%  Verdadeiro, se M corresponde ao caminho no formato [fagaras,bucharest] da cidade O a bucharest, e 
+%  O sendo a cidade que inicia o caminho
+%  Falso, se for passado nomenclatura que não for encontrada, ou se o caminho não for o correto
 melhor_caminho(bucharest, [bucharest]) :- !.
 melhor_caminho(O, [O | C]) :-
     melhor_vizinho(O, V),
     melhor_caminho(V, C).
 
+% Teste:
+:- begin_tests(melhor_caminho).
+    test(melhor_caminho0, M = [bucharest]) :- melhor_caminho(_,M).
+    test(melhor_caminho1, O = bucharest) :- melhor_caminho(O,_).
+    test(melhor_caminho2, O = fagaras) :- melhor_caminho(O,[fagaras,bucharest]).
+    test(melhor_caminho3, M = [fagaras,bucharest]) :- melhor_caminho(fagaras,M).
+    test(melhor_caminho4) :- melhor_caminho(fagaras,[fagaras,bucharest]).
+    test(melhor_caminho5, [fail]) :- melhor_caminho(fagaras,[fagaras,sibiu,bucharest]).
+    test(melhor_caminho6, [fail]) :- melhor_caminho(fagara,_).
+:- end_tests(melhor_caminho).
 
+
+
+%% melhor_vizinho(?O, ?V) is nondet.
+%  Verdadeiro, se melhor V corresponde ao vizinho com menor heuristica (distancia de V a bucareste em linha reta)
+%  de O.
+%  Falso, se for passado nomenclatura que não for encontrada
 melhor_vizinho(O, V) :-
     O - O1,
     menor_heuristica(O1, H),
     h(V, H).
 
-%% menor_heuristica(+XS, ?H).
-%
+% Teste:
+:- begin_tests(melhor_vizinho).
+    test(melhor_vizinho0) :- findall(X, melhor_vizinho(X,_), _).
+    test(melhor_vizinho1,[fail]) :- melhor_vizinho(fagara,_).
+    test(melhor_vizinho2,V = bucharest) :- melhor_vizinho(fagaras,V).
+    test(melhor_vizinho3) :- findall(X, melhor_vizinho(X,bucharest), _).
+    test(melhor_vizinho4,[fail]) :- melhor_vizinho(_,buchareste).
+:- end_tests(melhor_vizinho).
+
+
+
+%% menor_heuristica(+XS, ?H) is semidet
+%  Verdadeiro se H é o menor valor na heuristica h nas cidades contidas em XS
+%  Falso se algum valor em XS não pode ser encontrado um valor para a heuristica h
 menor_heuristica([], 1000000) :- !.
 menor_heuristica([A | A1], H) :-
     menor_heuristica(A1, H1),
@@ -27,6 +62,14 @@ menor_heuristica([A | A1], H) :-
     H0 > H1,
     H = H1,
     !.
+
+% Teste:
+:- begin_tests(menor_heuristica).
+    test(menor_heuristica0) :- menor_heuristica([sibiu/140, timisoara/118, zerind/75],253).
+    test(menor_heuristica0,fail) :- menor_heuristica([sibiu/140, timisoara/118, zerind/75],251).
+:- end_tests(menor_heuristica).
+
+
 
 % Distancia entre os Vizinhos:
 arad-[sibiu/140, timisoara/118, zerind/75].
@@ -71,20 +114,3 @@ h(timisoara,329).
 h(urziceni,80).
 h(vaslui,199).
 h(zerind,374).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
